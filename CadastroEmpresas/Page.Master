@@ -1,0 +1,67 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Page.Master.cs" Inherits="CadastroEmpresas.Page" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <meta charset="utf-8">
+    <meta name="viewport"
+        content="width=device-width,
+			           initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet"
+        type="text/css"
+        href="Scripts/fontawesome-free-5.15.4-web/css/all.css" />
+
+    <link rel="stylesheet" type="text/css" href="/Scripts/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="/Scripts/style.css" />
+    <script src="/Scripts/jquery-3.6.0.min.js"></script>
+    <script src="/Scripts/bootstrap.bundle.min.js"></script>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <div class="container-fluid">
+        
+        <div id="corpo-pagina">
+            <div class="form-group">
+                <div class="row" id="menu-lateral">
+                    
+                    
+
+                        <div class="col-md-2">
+
+                            <a href="CadastroProduto.aspx"
+                                id="ovLink_CadastroProduto">Inicio
+                            </a>
+                        </div>
+                        <div class="col-md-2">
+
+                            <a href="CadastroEmpresa.aspx"
+                                id="ovLink_CadastroEmpresa">Empresas
+                            </a>
+                        </div>
+                        <div class="col-md-2">
+
+                            <a href="ConsultaCep.aspx">Contato</a>
+                        </div>
+                     
+                        <div id="div_ident_user"
+                            runat="server"
+                            class="col-md-6">
+                        </div>
+                    
+                    <div id="pagina-filha" class="col-md-12">
+                        <form id="form1" runat="server">
+                            <div>
+                                <asp:ContentPlaceHolder ID="ContentPlaceHolder1"
+                                    runat="server">
+                                </asp:ContentPlaceHolder>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

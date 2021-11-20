@@ -68,12 +68,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <Content Include="Pages\Empresas.aspx" />
     <Content Include="Pages\Index.aspx" />
     <Content Include="Login.aspx" />
     <Content Include="Login.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.min.css" />
     <Content Include="Scripts\css.css" />
+    <Content Include="Scripts\Empresas.js" />
     <Content Include="Scripts\fontawesome-free-5.15.4-web\attribution.js" />
     <Content Include="Scripts\fontawesome-free-5.15.4-web\css\all.css" />
     <Content Include="Scripts\fontawesome-free-5.15.4-web\css\all.min.css" />
@@ -1729,6 +1731,13 @@
   <ItemGroup>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Empresas.aspx.cs">
+      <DependentUpon>Empresas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Empresas.aspx.designer.cs">
+      <DependentUpon>Empresas.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\Index.aspx.cs">
       <DependentUpon>Index.aspx</DependentUpon>

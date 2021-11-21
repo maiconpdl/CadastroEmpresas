@@ -7,13 +7,14 @@ using System.Web.Services;
 
 namespace CadastroEmpresas.Modelo.Entidades
 {
+    [Serializable]
     public class Empresa
     {
         public string Codigo { get; set; }
         public string NomeFantasia { get; set; }
         public string Data { get; set; }
         public string RazaoSocial { get; set; }
-        public bool Situacao { get; set; }
+        public string Situacao { get; set; }
         public bool Cooperativa { get; set; }
         public decimal QtdFuncionarios { get; set; }
         public decimal Faturamento { get; set; }
@@ -33,11 +34,6 @@ namespace CadastroEmpresas.Modelo.Entidades
         {
 
         }
-        [WebMethod]
-        public static string CadastraEmpresa(string NomeFantasia)
-        {
-            NomeFantasia = "Univel";
-            return NomeFantasia;
-        }
+        
     }
 }

@@ -13,13 +13,13 @@
 		<link rel="stylesheet" type="text/css" href="../Scripts/fontawesome-free-5.15.4-web/css/all.css"/>
 		<link rel="stylesheet" type="text/css" href="../Scripts/bootstrap.min.css"/>
 		<script src="../Scripts/jquery-3.6.0.min.js"></script>
-		<script src="../Scripts/javascript.js"></script>
         <script src="../Scripts/Empresas.js"></script>
+        <script src="../Scripts/javascript.js"></script>
 		<script src="../Scripts/bootstrap.bundle.min.js"></script>
 		
 
 
-	</head>
+</head>
 
 <div class="modal modal-cadastroEmpresa" id="modal-cadastroEmpresa" tabindex="-1">
 			<div class="modal-dialog modal-xl">
@@ -54,7 +54,7 @@
 
 						<div class="tab-content">
 							
-							<div class="form-group tab-pane active"  id="formEmpresa">
+							<div class="form-group tab-pane active" id="formEmpresa">
 								<div class="row">
 									<div class="col-md-2">	       			
 										<label class="campos-modal col-md-12">Código
@@ -63,7 +63,7 @@
 										</div>
 										<div class="col-md-6">	       			
 											<label class="campos-modal col-md-12">Nome Fantasia<label class="campoObrigatorio">*</label></label>
-											<input class="campos-modal col-md-12" id="ovTXT-NomeFantasia" type="text"/>	       			
+											<input class="campos-modal col-md-12" id="ovTXTNomeFantasia" type="text"/>	       			
 										</div>
 										<div class="col-md-2">
 											<label class="campos-modal col-md-12">Data Fundação</label>

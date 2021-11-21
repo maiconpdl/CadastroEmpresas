@@ -1828,6 +1828,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CadastroEmpresas.Controller\CadastroEmpresas.Controller.csproj">
+      <Project>{F797BFFD-6A5F-4E37-9DEA-05F03E377866}</Project>
+      <Name>CadastroEmpresas.Controller</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CadastroEmpresas.Modelo\CadastroEmpresas.Modelo.csproj">
       <Project>{6DADDDC1-B52C-4029-B8AD-11E98F8706CD}</Project>
       <Name>CadastroEmpresas.Modelo</Name>

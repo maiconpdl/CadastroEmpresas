@@ -71,7 +71,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controladores\EmpresaController.cs" />
+    <Compile Include="Controladores\FilialController.cs" />
     <Compile Include="Controladores\ListaDeEmpresas.cs" />
+    <Compile Include="Controladores\ListaDeFiliais.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

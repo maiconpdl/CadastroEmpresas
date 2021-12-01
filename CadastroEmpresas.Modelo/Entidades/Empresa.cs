@@ -28,7 +28,7 @@ namespace CadastroEmpresas.Modelo.Entidades
         public string Telefone { get; set; }
         public string Descricao { get;set; }
         public string Cnpj { get; set; }
-        //public string Filiais { get; set; }
+        public List<Filial> Filiais { get; set; }
 
         public Empresa()
         {

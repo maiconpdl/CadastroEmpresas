@@ -17,5 +17,5 @@
 }
 
 $(document).ready(function () {
-   // $(document).on("click", "#btn-SalvarEmpresa", SalvaEmpresa);
+   //$(document).on("click", "#btn-SalvarEmpresa", SalvaEmpresa);
 });

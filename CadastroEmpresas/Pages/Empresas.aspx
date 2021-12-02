@@ -26,10 +26,13 @@
 				<div class="modal-content">
 					<div class="modal-header" style="background-color: #ffffff;">
 						<label style="font-weight: bold; font-size: 20px;">Cadastro da Empresa</label>
-
+                        
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
+                    <div id="empresaSalva">
+                        <label style="margin-left: 10px; color: green;">A Empresa foi salva!</label>
 
+                    </div>
 					<div class="modal-body" style="background-color: #ffffff;">
 
 

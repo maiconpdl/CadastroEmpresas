@@ -26,7 +26,24 @@ namespace CadastroEmpresas.Pages
 
 
         [WebMethod]
-        public static List<Empresa> CadastraEmpresa(string Codigo, string NomeFantasia, string Cnpj, string Situacao)
+        public static List<Empresa> CadastraEmpresa(string Codigo,
+                                                    string NomeFantasia,
+                                                    string DataFundacao,
+                                                    string RazaoSocial,
+                                                    string Situacao,
+                                                    string Cooperativa,
+                                                    string QtdFuncionarios,
+                                                    string Faturamento,
+                                                    string CapitalSocial,
+                                                    string InscricaoEstadual,
+                                                    string Cidade,
+                                                    string Cep,
+                                                    string Bairro,
+                                                    string Endereco,
+                                                    string Email,
+                                                    string Telefone,
+                                                    string Descricao,
+                                                    string Cnpj)
         {
 
             empresa = new Empresa();
@@ -62,6 +79,15 @@ namespace CadastroEmpresas.Pages
             empresas = EmpresasSerializadas;
             return empresas;
         }
+
+
+        public static bool validaCadastroEmpresa()
+        {
+            
+            return false;
+        }
+
+
 
         [WebMethod]
         public static List<Filial> CadastraFilial(string IdEmpresa,

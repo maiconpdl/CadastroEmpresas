@@ -5,7 +5,7 @@ var Filiais = null;
 var Filial = null;
 var tipoDeCadastro = null; //para usar nos botões de Salvar
 var empresaAberta = null; //Para Saber qual empresa esta aberta e editar as filiais
-var cont = 1;
+var empresaSalva = false;
 //Define os atributos da empresa
 function newEmpresa(){
 	return {
@@ -72,135 +72,157 @@ function cadastraEmpresa(){
 	$("#empresa-tab").tab("show");
 	//Chama função para adicionar os botões.
 	mostraBotoesModal();
-	//Mostra o Modal Empresa
+    //Mostra o Modal Empresa
+    document.getElementById('empresaSalva').style.display = 'none';
 	$("#modal-cadastroEmpresa").modal("show");
 	$("#ovTXT-Codigo").focus();
+    $("#filial-tab").addClass(" active");
 
 }
 
 function salvarEmpresa() {
-
-    defineCampos();
-
-    //Cria variável para controle de campos vazios.
-    var campoVazio = false;
-
-	/*Verifica se algum campo obrigatório está vazio.
-	Se sim, define a borda do campo para vermelho e coloca
-	o valor true na variável campoVazio. Todos os campos obrigatórios
-	em branco ficarao vermelhos.*/
-    if ($("#ovTXT-Codigo").val() == "") {
-        $("#ovTXT-Codigo").css("border", '1px solid red');
-        campoVazio = true;
-
-    }
-    if ($("#ovTXTNomeFantasia").val() == "") {
-
-        $("#ovTXTNomeFantasia").css("border", '1px solid red');
-        campoVazio = true;
-    }
-    if ($("#ovTXT-RazaoSocial").val() == "") {
-
-        $("#ovTXT-RazaoSocial").css("border", '1px solid red');
-        campoVazio = true;
-    }
-    if ($("#ovTXT-CNPJ").val() == "") {
-
-        $("#ovTXT-CNPJ").css("border", '1px solid red');
-        campoVazio = true;
-    }
-    if ($("#ovTXT-Endereco").val() == "") {
-
-        $("#ovTXT-Endereco").css("border", '1px solid red');
-        campoVazio = true;
-    }
-	/*Verifica se a variável campoVazio tem o valor true.
-	Se sim, algum campo obrigatório está em branco, mostrando
-	mensagem para preencher os campos e para a execução.*/
-    if (campoVazio) {
-        alert("Preencha todos os campos obrigatórios!");
-        return;
-    }
-
-    //Pega os valores dos campos e adiciona as variáveis da Empresa
-    let CBSituacao = document.getElementById('ovCB-Situacao');
-    if ( CBSituacao.checked) {
-
-        var Situacao = "on";
+    if (!empresaSalva) {
+        $("#filial-tab").removeClass(" active");
+        document.getElementById('empresaSalva').style.display = 'block';
+        $("#filial-tab").tab("show");
+        empresaSalva = true;
     } else {
-        var Situacao = "Off";
-    }
-    $.ajax({
-        type: "POST",
-        url: "http://localhost:56574/Pages/Empresas.aspx/CadastraEmpresa",
-        data: "{Codigo: '" + $("#ovTXT-Codigo").val() + "',"
-            + "NomeFantasia: '" + $("#ovTXTNomeFantasia").val() + "',"
-            + "Cnpj: '" + $("#ovTXT-CNPJ").val() + "',"
-            + "Situacao: '" + Situacao + "'}",
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function (resposta) {
-            //Pega os valores dos campos e adiciona as variáveis da Empresa
-            Empresa.codigo = $("#ovTXT-Codigo").val();
-            Empresa.nomeFantasia = $("#ovTXTNomeFantasia").val();
-            Empresa.data = $("#ovTXT-DataFundacao").val();
+        defineCampos();
 
-            //Verifica os checkbox marcados
-            Empresa.razaoSocial = $("#ovTXT-RazaoSocial").val();
-            let CBSituacao = document.getElementById('ovCB-Situacao');
-            if (CBSituacao.checked) {
-                Empresa.situacao = 1;
-            } else {
-                Empresa.situacao = 0;
-            }
+        //Cria variável para controle de campos vazios.
+        var campoVazio = false;
 
-            let CBCooperativa = document.getElementById('ovCB-Cooperativa');
-            if (CBCooperativa.checked) {
-                Empresa.cooperativa = 1;
-            } else {
-                Empresa.cooperativa = 0;
-            }
+        /*Verifica se algum campo obrigatório está vazio.
+        Se sim, define a borda do campo para vermelho e coloca
+        o valor true na variável campoVazio. Todos os campos obrigatórios
+        em branco ficarao vermelhos.*/
+        if ($("#ovTXT-Codigo").val() == "") {
+            $("#ovTXT-Codigo").css("border", '1px solid red');
+            campoVazio = true;
 
-            Empresa.qtdFuncionarios = $("#ovTXT-QtdFuncionarios").val();
-            Empresa.faturamento = $("#ovTXT-Faturamento").val();
-            Empresa.capitalSocial = $("#ovTxt-CapitalSocial").val();
-            Empresa.inscricaoEstadual = $("#ovTXT-InscricaoEstadual").val();
-            Empresa.cnpj = $("#ovTXT-CNPJ").val();
-            Empresa.cidade = $("#ovTXT-Cidade").val();
-            Empresa.cep = $("#ovTXT-CEP").val();
-            Empresa.bairro = $("#ovTXT-Bairro").val();
-            Empresa.endereco = $("#ovTXT-Endereco").val();
-            Empresa.descricao = $("#ovTXT-Descricao").val();
-            Empresa.email = $("#ovTXT-Email").val();
-            Empresa.telefone = $("#ovTXT-Telefone").val();
-            /*A variável filiais em empresa, recebe o vetor onde 
-            onde foram gravadas as filiais.*/
-            Empresa.filiais = Filiais;
+        }
+        if ($("#ovTXTNomeFantasia").val() == "") {
 
-            //Verifica se a empresa já esta cadastrada.
-            /*var empresaCadastrada = Empresas.filter(function (empresa) {
-                return empresa.codigo == Empresa.codigo;
-            }).length > 0;
+            $("#ovTXTNomeFantasia").css("border", '1px solid red');
+            campoVazio = true;
+        }
+        if ($("#ovTXT-RazaoSocial").val() == "") {
 
-            if (empresaCadastrada)
-                Empresas.map(function (empresa, index) {
-                    if (empresa.codigo == empresaAberta)
-                        empresa.nomeFantasia == Empresa.nomeFantasia;
+            $("#ovTXT-RazaoSocial").css("border", '1px solid red');
+            campoVazio = true;
+        }
+        if ($("#ovTXT-CNPJ").val() == "") {
 
-                });
+            $("#ovTXT-CNPJ").css("border", '1px solid red');
+            campoVazio = true;
+        }
+        if ($("#ovTXT-Endereco").val() == "") {
 
-            else*/
+            $("#ovTXT-Endereco").css("border", '1px solid red');
+            campoVazio = true;
+        }
+        /*Verifica se a variável campoVazio tem o valor true.
+        Se sim, algum campo obrigatório está em branco, mostrando
+        mensagem para preencher os campos e para a execução.*/
+        if (campoVazio) {
+            alert("Preencha todos os campos obrigatórios!");
+            return;
+        }
+
+        //Pega os valores dos campos e adiciona as variáveis da Empresa
+        let CBSituacao = document.getElementById('ovCB-Situacao');
+        if (CBSituacao.checked) {
+
+            var Situacao = "on";
+        } else {
+            var Situacao = "Off";
+        }
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:56574/Pages/Empresas.aspx/CadastraEmpresa",
+            data: "{Codigo: '" + $("#ovTXT-Codigo").val() + "',"
+                + "NomeFantasia: '" + $("#ovTXTNomeFantasia").val() + "',"
+                + "DataFundacao: '" + $("#ovTXT-DataFundacao").val() + "',"
+                + "RazaoSocial: '" + $("#ovTXT-RazaoSocial").val() + "',"
+                + "Situacao: '" + Situacao + "',"
+                + "Cooperativa: '" + $("#ovCB-Cooperativa").val() + "',"
+                + "QtdFuncionarios: '" + $("#ovTXT-QtdFuncionarios").val() + "',"
+                + "Faturamento: '" + $("#ovTXT-Faturamento").val() + "',"
+                + "CapitalSocial: '" + $("#ovTXT-CapitalSocial").val() + "',"
+                + "InscricaoEstadual: '" + $("#ovTXT-InscricaoEstadual").val() + "',"
+                + "Cidade: '" + $("#ovTXT-Cidade").val() + "',"
+                + "Cep: '" + $("#ovTXT-CEP").val() + "',"
+                + "Bairro: '" + $("#ovTXT-Bairro").val() + "',"
+                + "Endereco: '" + $("#ovTXT-Endereco").val() + "',"
+                + "Email: '" + $("#ovTXT-Email").val() + "',"
+                + "Telefone: '" + $("#ovTXT-Telefone").val() + "',"
+                + "Descricao: '" + $("#ovTXT-Descricao").val() + "',"
+                + "Cnpj: '" + $("#ovTXT-CNPJ").val() + "'}",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (resposta) {
+                //Pega os valores dos campos e adiciona as variáveis da Empresa
+                Empresa.codigo = $("#ovTXT-Codigo").val();
+                Empresa.nomeFantasia = $("#ovTXTNomeFantasia").val();
+                Empresa.data = $("#ovTXT-DataFundacao").val();
+
+                //Verifica os checkbox marcados
+                Empresa.razaoSocial = $("#ovTXT-RazaoSocial").val();
+                let CBSituacao = document.getElementById('ovCB-Situacao');
+                if (CBSituacao.checked) {
+                    Empresa.situacao = 1;
+                } else {
+                    Empresa.situacao = 0;
+                }
+
+                let CBCooperativa = document.getElementById('ovCB-Cooperativa');
+                if (CBCooperativa.checked) {
+                    Empresa.cooperativa = 1;
+                } else {
+                    Empresa.cooperativa = 0;
+                }
+
+                Empresa.qtdFuncionarios = $("#ovTXT-QtdFuncionarios").val();
+                Empresa.faturamento = $("#ovTXT-Faturamento").val();
+                Empresa.capitalSocial = $("#ovTxt-CapitalSocial").val();
+                Empresa.inscricaoEstadual = $("#ovTXT-InscricaoEstadual").val();
+                Empresa.cnpj = $("#ovTXT-CNPJ").val();
+                Empresa.cidade = $("#ovTXT-Cidade").val();
+                Empresa.cep = $("#ovTXT-CEP").val();
+                Empresa.bairro = $("#ovTXT-Bairro").val();
+                Empresa.endereco = $("#ovTXT-Endereco").val();
+                Empresa.descricao = $("#ovTXT-Descricao").val();
+                Empresa.email = $("#ovTXT-Email").val();
+                Empresa.telefone = $("#ovTXT-Telefone").val();
+                /*A variável filiais em empresa, recebe o vetor onde 
+                onde foram gravadas as filiais.*/
+                Empresa.filiais = Filiais;
+
+                //Verifica se a empresa já esta cadastrada.
+                /*var empresaCadastrada = Empresas.filter(function (empresa) {
+                    return empresa.codigo == Empresa.codigo;
+                }).length > 0;
+    
+                if (empresaCadastrada)
+                    Empresas.map(function (empresa, index) {
+                        if (empresa.codigo == empresaAberta)
+                            empresa.nomeFantasia == Empresa.nomeFantasia;
+    
+                    });
+    
+                else*/
                 //Adiciona a Empresa em Empresas.
                 Empresas.push(Empresa);
                 mostraEmpresa();
-        },
+            },
 
-    });
+        });
 
-    //Fecha o modal Empresa
-    $("#modal-cadastroEmpresa").modal("hide");
-    //Listar as empresas.
-
+        //Fecha o modal Empresa
+        $("#modal-cadastroEmpresa").modal("hide");
+        empresaSalva = false;
+        //Listar as empresas.
+    }
 }
 
 function carregaEmpresas() {
@@ -352,13 +374,12 @@ function editarEmpresa(codigoEmpresa) {
    
 
     carregaFiliais();
-	//mostraFilial();
     
 	$("#modal-cadastroEmpresa").modal("show");
 	$("#ovTXT-Codigo").focus();
 	//Bloqueia a edição do campo código.
 	$("#ovTXT-Codigo").prop("disabled", true);
-
+    $("#filial-tab").removeClass(" active");
 }
 
 function removerEmpresa(codigoEmpresa){

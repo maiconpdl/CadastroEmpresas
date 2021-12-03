@@ -707,25 +707,43 @@ function editarFilial(codigoFilial){
 
 function removerFilial(codigoFilial){
 	
-	var Empresa = Empresas.filter(function(empresa, index){
+	/*var Empresa = Empresas.filter(function(empresa, index){
 		return empresa.codigo == empresaAberta;
 	})[0];
 
 
-	
-	var Filial = Empresa.filiais.filter(function(filial, index){
+	*/
+	var Filial = Filiais.filter(function(filial, index){
 		return filial.codigo == codigoFilial;
 	})[0];
 
 	if(!confirm("Remover a filial "
 		+ Filial.descricao + "?"))
 		return;
-	
+	/*
 	Empresa.filiais = Empresa.filiais.filter(function(filial, index){
 		return filial.codigo != codigoFilial;
 	});
-	Filiais = Empresa.filiais;
-	mostraFilial();
+    */
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:56574/Pages/Empresas.aspx/RemoveFilial",
+        data: "{CodigoEmpresa: '" + $("#ovTXT-Codigo").val() + "',"
+             + "CodigoFilial: '" + codigoFilial + "'}",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (resposta) {
+            carregaFiliais();
+
+        },
+        error: function (response) {
+            alert("Erro ao remover " + $("#ovTXTNomeFantasia").val());
+
+        },
+        failure: function (response) {
+            alert("Failure");
+        },
+    });
 }
 
 function editarEvent(){

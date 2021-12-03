@@ -18,6 +18,7 @@ namespace CadastroEmpresas.Pages
         static List<Empresa> empresas = new List<Empresa>();
         static List<Empresa> empresas2 = new List<Empresa>();
         static List<Filial> filiais = new List<Filial>();
+        static List<Filial> filiais2 = new List<Filial>();
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -165,6 +166,30 @@ namespace CadastroEmpresas.Pages
              listaFiliais.Deserializar();
             filiais = FiliaisSerializadas;
             return filiais;
+        }
+
+        [WebMethod]
+        public static void RemoveFilial(string CodigoEmpresa, string CodigoFilial)
+        {
+
+            string Caminho = @"C:\Teste\Filiais.dat";
+            var listaFiliais = new FilialController();
+            List<Filial> FiliaisSerializadas =
+             listaFiliais.Deserializar();
+            filiais = FiliaisSerializadas;
+            File.Delete(Caminho);
+            foreach (Filial fil in filiais)
+            {
+                if ((fil.Codigo != CodigoFilial)&&(fil.IdEmpresa == CodigoEmpresa))
+                {
+                    filiais2.Add(fil);
+                    var listaFiliaisRestantes = new FilialController();
+                    listaFiliaisRestantes.Serializar(filiais2);
+                }
+            }
+
+            filiais = filiais2;
+            filiais2.Clear();
         }
 
 

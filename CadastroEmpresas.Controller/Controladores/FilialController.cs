@@ -33,7 +33,7 @@ namespace CadastroEmpresas.Controller.Controladores
                 return fil;
 
             }
-            FileStream fs = new FileStream(Caminho,
+                FileStream fs = new FileStream(Caminho,
                                            FileMode.Open);
 
             BinaryFormatter bf = new BinaryFormatter();

@@ -392,10 +392,28 @@ function removerEmpresa(codigoEmpresa){
 		+ Empresa.nomeFantasia + "?"))
 		return;
 	
-	Empresas = Empresas.filter(function(empresa, index){
+	/*Empresas = Empresas.filter(function(empresa, index){
 		return empresa.codigo != codigoEmpresa;
-	});
-	mostraEmpresa();
+    });
+    */
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:56574/Pages/Empresas.aspx/RemoveEmpresa",
+        data: "{CodigoEmpresa: '"+ codigoEmpresa +"'}",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (resposta) {
+            carregaEmpresas();
+
+        },
+        error: function (response) {
+            alert("Erro ao remover " + $("#ovTXTNomeFantasia").val());
+
+        },
+        failure: function (response) {
+            alert("Failure");
+        },
+    });
 }
 
 //Definindo atributos de uma filial.

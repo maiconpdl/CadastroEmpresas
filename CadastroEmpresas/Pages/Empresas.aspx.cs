@@ -2,6 +2,7 @@
 using CadastroEmpresas.Modelo.Entidades;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Services;
@@ -15,6 +16,7 @@ namespace CadastroEmpresas.Pages
         static Empresa empresa;
         static Filial filial;
         static List<Empresa> empresas = new List<Empresa>();
+        static List<Empresa> empresas2 = new List<Empresa>();
         static List<Filial> filiais = new List<Filial>();
 
         protected void Page_Load(object sender, EventArgs e)
@@ -80,6 +82,30 @@ namespace CadastroEmpresas.Pages
             return empresas;
         }
 
+        [WebMethod]
+        public static void RemoveEmpresa(string CodigoEmpresa)
+        {
+
+            string Caminho = @"C:\Teste\Empresas.dat";
+            var listaEmpresas = new EmpresaController();
+            List<Empresa> EmpresasSerializadas =
+             listaEmpresas.Deserializar();
+            empresas = EmpresasSerializadas;
+            File.Delete(Caminho);
+            foreach(Empresa emp in empresas)
+            {
+                if(emp.Codigo != CodigoEmpresa)
+                {
+                    empresas2.Add(emp);
+                    var listaEmpresasEditadas = new EmpresaController();
+                    listaEmpresasEditadas.Serializar(empresas2);
+                }
+            }
+
+            empresas = empresas2;
+            empresas2.Clear();
+        }
+
 
         public static bool validaCadastroEmpresa()
         {
@@ -140,5 +166,7 @@ namespace CadastroEmpresas.Pages
             filiais = FiliaisSerializadas;
             return filiais;
         }
+
+
     }
 }

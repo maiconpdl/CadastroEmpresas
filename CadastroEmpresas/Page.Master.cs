@@ -12,7 +12,7 @@ namespace CadastroEmpresas
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            div_ident_user.InnerHtml = $"<label>{PageUtil.USUARIO_LOGADO?.Login}</label>";
+            div_ident_user.InnerHtml = $"<label>{PageUtil.USUARIO_LOGADO?.nome}</label>";
             
         }
     }

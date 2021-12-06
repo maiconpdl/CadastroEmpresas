@@ -45,7 +45,10 @@
             </div>
             <div class="form-group">
                 <div class="row">
-                    <div class="col-md-12 pull-right">
+                    <div class="col-md-6" style="margin-top: 20px;">
+                        <a href="/pages/Usuarios.aspx" >Cadastre-se</a>
+                    </div>
+                    <div class="col-md-6 pull-right">
                         <button type="button"
                             id="ovBTN_Login"
                             class="btn btn-success">

@@ -1,4 +1,5 @@
-﻿using CadastroEmpresas.Modelo.Entidades;
+﻿using CadastroEmpresas.Controller.Controladores;
+using CadastroEmpresas.Modelo.Entidades;
 using CadastroEmpresas.Utils;
 using System;
 using System.Collections.Generic;
@@ -19,11 +20,12 @@ namespace CadastroEmpresas
             {
                 if (HttpContext.Current.Session[CHAVE_USUARIOS] == null)
                 {
-                    var UsuariosPermitidos = new List<Usuario>
-                    {
-                        new Usuario("Teste", "123"),
-                        new Usuario("Jacare", "1234")
-                    };
+                    var UsuariosPermitidos = new List<Usuario>();
+                    var listaUsuarios = new UsuariosController();
+                    List<Usuario> UsuariosSerializados =
+                        listaUsuarios.Deserializar();
+                    UsuariosPermitidos = UsuariosSerializados;
+                    
                     HttpContext.Current.Session[CHAVE_USUARIOS] = UsuariosPermitidos;
                 }
                 return HttpContext.Current.Session[CHAVE_USUARIOS] as List<Usuario>;
@@ -44,14 +46,28 @@ namespace CadastroEmpresas
         public static string autenticar(string usuario,
                                         string senha)
         {
-            Usuario Autenticado = Usuarios.FirstOrDefault(o => o.Login == usuario
-                                                            && o.Senha == senha);
-            if (Autenticado != null)
+
+            var UsuariosPermitidos = new List<Usuario>();
+            var listaUsuarios = new UsuariosController();
+            List<Usuario> UsuariosSerializados =
+                listaUsuarios.Deserializar();
+            UsuariosPermitidos = UsuariosSerializados;
+            foreach(Usuario user in UsuariosPermitidos)
             {
-                PageUtil.USUARIO_LOGADO = Autenticado;
-                return "OK";
+                if((user.Login == usuario)&&(user.Senha == senha))
+                {
+                    Usuario Autenticado = Usuarios.FirstOrDefault(o => o.Login == usuario
+                                                            && o.Senha == senha);
+                    if (Autenticado != null)
+                    {
+                        PageUtil.USUARIO_LOGADO = Autenticado;
+                        return "OK";
+                    }
+                }
             }
-            return "Usuário ou senha Incorretos!";
+                    return "Usuário ou senha Incorretos!";
+
+            
         }
     }
 }

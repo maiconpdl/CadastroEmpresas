@@ -15,10 +15,10 @@ namespace CadastroEmpresas.Modelo.Entidades
         public string Data { get; set; }
         public string RazaoSocial { get; set; }
         public string Situacao { get; set; }
-        public bool Cooperativa { get; set; }
-        public decimal QtdFuncionarios { get; set; }
-        public decimal Faturamento { get; set; }
-        public decimal CapitalSocial { get; set; }
+        public string Cooperativa { get; set; }
+        public string QtdFuncionarios { get; set; }
+        public string Faturamento { get; set; }
+        public string CapitalSocial { get; set; }
         public string InscricaoEstadual { get; set; }
         public string Cidade { get; set; }
         public string Cep { get; set; }

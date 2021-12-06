@@ -20,9 +20,9 @@
 }
 
 #div_ident_user {
-	background-color: darkgray;
+	background-color: #ccc;
 	padding: 5px;
-	font-size: 12px;
+	font-size: 20px;
 	text-align: right;
 }
 
@@ -31,5 +31,5 @@
 }
 
 #pagina-filha{
-	background-color: cadetblue;
+	background-color: #ccc;
 }

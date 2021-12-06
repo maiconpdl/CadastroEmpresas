@@ -29,7 +29,7 @@ namespace CadastroEmpresas.Pages
 
 
         [WebMethod]
-        public static List<Empresa> CadastraEmpresa(string Codigo,
+        public static List<Empresa> SalvaEmpresa(string Codigo,
                                                     string NomeFantasia,
                                                     string DataFundacao,
                                                     string RazaoSocial,
@@ -46,25 +46,72 @@ namespace CadastroEmpresas.Pages
                                                     string Email,
                                                     string Telefone,
                                                     string Descricao,
-                                                    string Cnpj)
+                                                    string Cnpj,
+                                                    string Editando)
         {
 
-            empresa = new Empresa();
-            empresa.Codigo = Codigo;
-            empresa.NomeFantasia = NomeFantasia;
-            empresa.Cnpj = Cnpj;
-            empresa.Situacao = Situacao;
-            try
+           if(Editando == "true")
             {
-                empresa.Filiais.Add(filial);
-
+                empresas = CarregaEmpresas();
+                foreach(Empresa emp in empresas)
+                {
+                    if(emp.Codigo == Codigo)
+                    {
+                        emp.Codigo = Codigo;
+                        emp.NomeFantasia = NomeFantasia;
+                        emp.Data = DataFundacao;
+                        emp.RazaoSocial = RazaoSocial;
+                        emp.Situacao = Situacao;
+                        emp.Cooperativa = Cooperativa;
+                        emp.QtdFuncionarios = QtdFuncionarios;
+                        emp.Faturamento = Faturamento;
+                        emp.CapitalSocial = CapitalSocial;
+                        emp.InscricaoEstadual = InscricaoEstadual;
+                        emp.Cidade = Cidade;
+                        emp.Cep = Cep;
+                        emp.Bairro = Bairro;
+                        emp.Endereco = Endereco;
+                        emp.Email = Email;
+                        emp.Telefone = Telefone;
+                        emp.Descricao = Descricao;
+                        emp.Cnpj = Cnpj;
+                       
+                    }
+                }
             }
-            catch
+            else
             {
+                empresa = new Empresa();
+                empresa.Codigo = Codigo;
+                empresa.NomeFantasia = NomeFantasia;
+                empresa.Data = DataFundacao;
+                empresa.RazaoSocial = RazaoSocial;
+                empresa.Situacao = Situacao;
+                empresa.Cooperativa = Cooperativa;
+                empresa.QtdFuncionarios = QtdFuncionarios;
+                empresa.Faturamento = Faturamento;
+                empresa.CapitalSocial = CapitalSocial;
+                empresa.InscricaoEstadual = InscricaoEstadual;
+                empresa.Cidade = Cidade;
+                empresa.Cep = Cep;
+                empresa.Bairro = Bairro;
+                empresa.Endereco = Endereco;
+                empresa.Email = Email;
+                empresa.Telefone = Telefone;
+                empresa.Descricao = Descricao;
+                empresa.Cnpj = Cnpj;
+                try
+                {
+                    empresa.Filiais.Add(filial);
 
+                }
+                catch
+                {
+
+                }
+                empresas.Add(empresa);
             }
 
-            empresas.Add(empresa);
 
 
             var listaEmpresas = new EmpresaController();

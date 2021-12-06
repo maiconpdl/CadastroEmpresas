@@ -1,8 +1,9 @@
 var Empresas = null;
-var Empresas2 = null;
 var Empresa = null;
 var Filiais = null;
 var Filial = null;
+var editando = "false";
+var editandoFilial = "false";
 var tipoDeCadastro = null; //para usar nos botões de Salvar
 var empresaAberta = null; //Para Saber qual empresa esta aberta e editar as filiais
 var empresaSalva = false;
@@ -36,6 +37,7 @@ function newEmpresa(){
 //Abre um novo Form para cadastro de empresa
 function cadastraEmpresa(){
 	//Cria uma nova empresa
+    editando = "false";
     Empresa = newEmpresa();
     Filiais = [];
 	defineCampos();	
@@ -81,7 +83,17 @@ function cadastraEmpresa(){
 }
 
 function salvarEmpresa() {
-    if (!empresaSalva) {
+
+    var Empresa = Empresas.filter(function (empresa, index) {
+        return empresa.codigo == $("#ovTXT-Codigo").val();
+    })[0];
+    
+    if (Empresa && (editando == "false")) {
+        alert("Codigo da empresa já cadastrado!");
+        return;
+    }
+
+    if ((!empresaSalva) && (editando == "false")) {
         $("#filial-tab").removeClass(" active");
         document.getElementById('empresaSalva').style.display = 'block';
         $("#filial-tab").tab("show");
@@ -129,6 +141,8 @@ function salvarEmpresa() {
             return;
         }
 
+        
+
         //Pega os valores dos campos e adiciona as variáveis da Empresa
         let CBSituacao = document.getElementById('ovCB-Situacao');
         if (CBSituacao.checked) {
@@ -139,7 +153,7 @@ function salvarEmpresa() {
         }
         $.ajax({
             type: "POST",
-            url: "http://localhost:56574/Pages/Empresas.aspx/CadastraEmpresa",
+            url: "http://localhost:56574/Pages/Empresas.aspx/SalvaEmpresa",
             data: "{Codigo: '" + $("#ovTXT-Codigo").val() + "',"
                 + "NomeFantasia: '" + $("#ovTXTNomeFantasia").val() + "',"
                 + "DataFundacao: '" + $("#ovTXT-DataFundacao").val() + "',"
@@ -157,7 +171,8 @@ function salvarEmpresa() {
                 + "Email: '" + $("#ovTXT-Email").val() + "',"
                 + "Telefone: '" + $("#ovTXT-Telefone").val() + "',"
                 + "Descricao: '" + $("#ovTXT-Descricao").val() + "',"
-                + "Cnpj: '" + $("#ovTXT-CNPJ").val() + "'}",
+                + "Cnpj: '" + $("#ovTXT-CNPJ").val() + "',"
+                + "Editando: '" + editando + "'}",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (resposta) {
@@ -194,34 +209,21 @@ function salvarEmpresa() {
                 Empresa.descricao = $("#ovTXT-Descricao").val();
                 Empresa.email = $("#ovTXT-Email").val();
                 Empresa.telefone = $("#ovTXT-Telefone").val();
-                /*A variável filiais em empresa, recebe o vetor onde 
-                onde foram gravadas as filiais.*/
+              
                 Empresa.filiais = Filiais;
 
-                //Verifica se a empresa já esta cadastrada.
-                /*var empresaCadastrada = Empresas.filter(function (empresa) {
-                    return empresa.codigo == Empresa.codigo;
-                }).length > 0;
-    
-                if (empresaCadastrada)
-                    Empresas.map(function (empresa, index) {
-                        if (empresa.codigo == empresaAberta)
-                            empresa.nomeFantasia == Empresa.nomeFantasia;
-    
-                    });
-    
-                else*/
-                //Adiciona a Empresa em Empresas.
+        
                 Empresas.push(Empresa);
-                mostraEmpresa();
             },
 
         });
 
-        //Fecha o modal Empresa
+                carregaEmpresas();
+
         $("#modal-cadastroEmpresa").modal("hide");
         empresaSalva = false;
-        //Listar as empresas.
+        editando = "false";
+
     }
 }
 
@@ -334,10 +336,10 @@ function editarEmpresa(codigoEmpresa) {
 		return empresa.codigo == codigoEmpresa;
 	})[0];
 	
-	/*Filiais recebe as filiais cadastradas na empresa atual dentro de 
-	Empresa.filiais*/
-	//Filiais = Empresa.filiais;
-	empresaAberta = codigoEmpresa;
+
+    editando = "true";
+    empresaAberta = codigoEmpresa;
+    tipoDeCadastro = "Empresa";
 
 	$("#ovTXT-Codigo").val(Empresa.codigo);
 	$("#ovTXTNomeFantasia").val(Empresa.nomeFantasia);
@@ -374,12 +376,13 @@ function editarEmpresa(codigoEmpresa) {
    
 
     carregaFiliais();
-    
 	$("#modal-cadastroEmpresa").modal("show");
+    mostraBotoesModal();
 	$("#ovTXT-Codigo").focus();
 	//Bloqueia a edição do campo código.
 	$("#ovTXT-Codigo").prop("disabled", true);
     $("#filial-tab").removeClass(" active");
+   
 }
 
 function removerEmpresa(codigoEmpresa){
@@ -392,10 +395,6 @@ function removerEmpresa(codigoEmpresa){
 		+ Empresa.nomeFantasia + "?"))
 		return;
 	
-	/*Empresas = Empresas.filter(function(empresa, index){
-		return empresa.codigo != codigoEmpresa;
-    });
-    */
     $.ajax({
         type: "POST",
         url: "http://localhost:56574/Pages/Empresas.aspx/RemoveEmpresa",
@@ -468,6 +467,15 @@ function cadastraFilial(){
 }
 
 function salvarFilial(){
+
+    var Filial = Filiais.filter(function (filial, index) {
+        return filial.codigo == $("#ovTXT-CodigoFilial").val();
+    })[0];
+
+    if (Filial && (editando == "false")) {
+        alert("Codigo da filial já cadastrado!");
+        return;
+    }
 
     defineCampos();
     if (Filiais == null) {
@@ -563,7 +571,7 @@ function salvarFilial(){
             $("#modal-cadastroFilial").modal("hide");
     mostraBotoesModal();
     mostraFilial();
-
+    editandoFilial = "false";
 }
 
 function carregaFiliais() {
@@ -610,7 +618,7 @@ function carregaFiliais() {
                         mostraFilial();
         },
         error: function (response) {
-            alert("Erro ao salvar " + $("#ovTXTNomeFantasia").val());
+            alert("Erro ao salvar " + $("#ovTXT-DescricaoFilial").val());
 
         },
         failure: function (response) {
@@ -663,13 +671,14 @@ function mostraFilial(){
 }
 
 function editarFilial(codigoFilial){
-    Filial = [];
+    
     tipoDeCadastro = "Filial";
-    //alert(codigoFilial);
+    editandoFilial = "true";
+    
 	Filial = Filiais.filter(function(filial, index){
 		return filial.codigo == codigoFilial;
 	})[0];
-    
+    console.log(codigoFilial);
 	$("#ovTXT-CodigoFilial").val(Filial.codigo);
 	$("#ovTXT-DescricaoFilial").val(Filial.descricao);
 	$("#ovTXT-Sigla").val(Filial.sigla);
@@ -707,12 +716,6 @@ function editarFilial(codigoFilial){
 
 function removerFilial(codigoFilial){
 	
-	/*var Empresa = Empresas.filter(function(empresa, index){
-		return empresa.codigo == empresaAberta;
-	})[0];
-
-
-	*/
 	var Filial = Filiais.filter(function(filial, index){
 		return filial.codigo == codigoFilial;
 	})[0];
@@ -720,11 +723,7 @@ function removerFilial(codigoFilial){
 	if(!confirm("Remover a filial "
 		+ Filial.descricao + "?"))
 		return;
-	/*
-	Empresa.filiais = Empresa.filiais.filter(function(filial, index){
-		return filial.codigo != codigoFilial;
-	});
-    */
+	
     $.ajax({
         type: "POST",
         url: "http://localhost:56574/Pages/Empresas.aspx/RemoveFilial",
@@ -737,7 +736,7 @@ function removerFilial(codigoFilial){
 
         },
         error: function (response) {
-            alert("Erro ao remover " + $("#ovTXTNomeFantasia").val());
+            alert("Erro ao remover " + $("#ovTXT-DescricaoFilial").val());
 
         },
         failure: function (response) {
@@ -760,8 +759,7 @@ function editarEvent(){
 	$(".btn-EditarFilial").each(function(indice, btn){
 		$(btn).on("click", function(){
             var codigoFilial = $(this).data("codigofilial");
-            alert(codigoFilial);
-			editarFilial(codigoFilial);
+            editarFilial(codigoFilial);
 		});
 	});
 }
@@ -821,7 +819,7 @@ $(document).ready(function(){
     Empresas = [];
     Filiais = [];
     carregaEmpresas();
-    //carregaFiliais();
+   
 
 	//Definindo quais functions serão chamadas ao click em cada botão.
 	$(document).on("click", "#ovBTN-AdicionarEmpresa",cadastraEmpresa);

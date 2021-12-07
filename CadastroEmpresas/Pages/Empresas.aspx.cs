@@ -181,6 +181,8 @@ namespace CadastroEmpresas.Pages
                                                   )
         {
 
+           
+
             filial = new Filial();
             filial.IdEmpresa = IdEmpresa;
             filial.Codigo = Codigo;
@@ -196,22 +198,68 @@ namespace CadastroEmpresas.Pages
             filial.Cep = Cep;
             filial.Telefone = Telefone;
             filial.Email = Email;
-            filiais.Add(filial);
+            
 
 
-            var listaFiliais = new FilialController();
-            listaFiliais.Serializar(filiais);
+            string Caminho = @"C:\Teste\Empresas.dat";
+            var listaEmpresas = new EmpresaController();
+            List<Empresa> EmpresasSerializadas =
+             listaEmpresas.Deserializar();
+            empresas = EmpresasSerializadas;
+            File.Delete(Caminho);
+            foreach (Empresa emp in empresas)
+            {
+                if (emp.Codigo == IdEmpresa)
+                {
+                    try
+                    {
+                        emp.Filiais.Add(filial);
+                    }
+                    catch
+                    {
+                        emp.Filiais = new List<Filial>();
+                        emp.Filiais.Add(filial);
+                    }
+                        
 
+                    
+                }
+                empresas2.Add(emp);
+                
+            }
+            var listaEmpresasEditadas = new EmpresaController();
+            listaEmpresasEditadas.Serializar(empresas2);
+            empresas = empresas2;
+            empresas2.Clear();
+
+            foreach(Empresa emp in empresas)
+            {
+                if(emp.Codigo == IdEmpresa)
+                {
+                    return emp.Filiais;
+                }
+            }
+            
             return filiais;
         }
 
         [WebMethod]
-        public static List<Filial> CarregaFiliais()
+        public static List<Filial> CarregaFiliais(string IdEmpresa)
         {
-            var listaFiliais = new FilialController();
-            List<Filial> FiliaisSerializadas =
-             listaFiliais.Deserializar();
-            filiais = FiliaisSerializadas;
+
+            var listaEmpresas = new EmpresaController();
+            List<Empresa> EmpresasSerializadas =
+             listaEmpresas.Deserializar();
+            empresas = EmpresasSerializadas;
+            foreach(Empresa emp in empresas)
+            {
+                if(emp.Codigo == IdEmpresa)
+                {
+                    Console.WriteLine("Entrou");
+                    return emp.Filiais;
+                }
+            }
+
             return filiais;
         }
 
